@@ -1,0 +1,100 @@
+<div *ngIf="viewMode; else editable">
+  <div *ngIf="currentTutorial.id">
+    <h4>ToDo's</h4>
+    <div>
+      <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+    </div>
+    <div>
+      <label><strong>Description:</strong></label>
+      {{ currentTutorial.description }}<br>
+      <label><strong>Date:</strong></label>
+      {{ currentTutorial.today | date:'long'}}
+
+    </div>
+    <div>
+        
+      <label><strong>Status:</strong></label>
+      {{ currentTutorial.Status ? "Done" : "Pending" }}
+    </div>
+
+    <a
+      class="btn btn-warning"
+      routerLink="/todo/{{ currentTutorial.id }}"
+    >
+      Edit
+    </a>
+  </div>
+
+  <div *ngIf="!currentTutorial">
+    <br />
+    <p>Please click on a Task...</p>
+  </div>
+</div>
+
+<ng-template #editable>
+  <div *ngIf="currentTutorial.id" class="edit-form">
+    <h4>ToDo</h4>
+    <form>
+      <div class="form-group" style="width: 400px;">
+        <label for="title">Title</label>
+        <input
+        style="border-radius: 20px;"
+          type="text"
+          class="form-control"
+          id="title"
+          [(ngModel)]="currentTutorial.title"
+          name="title"
+        />
+      </div>
+      <div class="form-group" style="width: 400px;">
+        <label for="description">Description</label>
+        <input
+        style="border-radius: 20px;"
+          type="text"
+          class="form-control"
+          id="description"
+          [(ngModel)]="currentTutorial.description"
+          name="description"
+        />
+      </div>
+
+      <div class="form-group">
+        <label><strong>Status:</strong></label>
+        {{ currentTutorial.Status ? "Done" : "Pending" }}
+      </div>
+    </form>
+
+    <button
+      class="btn btn-secondary"
+      *ngIf="currentTutorial.Status"
+      (click)="updatePublished(false)"
+    >
+      Not Done
+    </button>
+    <button
+      *ngIf="!currentTutorial.Status"
+      class="btn btn-success"
+      (click)="updatePublished(true)"
+    >
+      Done
+    </button>
+
+    <button class="btn btn-danger" (click)="deleteTask()">
+      Delete
+    </button>
+
+    <button
+      type="submit"
+      class="btn btn-warning"
+      (click)="updateTask()"
+    >
+      Update
+    </button>
+   
+  </div>
+
+  <div *ngIf="!currentTutorial.id">
+    <br />
+    <p>Cannot access this Task...</p>
+  </div>
+</ng-template>
